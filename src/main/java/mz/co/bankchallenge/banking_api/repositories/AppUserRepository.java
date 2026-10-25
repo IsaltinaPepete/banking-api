@@ -7,8 +7,12 @@ import java.util.UUID;
 import java.util.Optional;
 
 
+/** Repository for the manual Keycloak-user to customer association. */
 public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
 
+    /** @param keycloakUserId JWT subject associated with the user
+     *  @return the linked application user, when present
+     */
     Optional<AppUser> findByKeycloakUserId(String keycloakUserId);
 
 }

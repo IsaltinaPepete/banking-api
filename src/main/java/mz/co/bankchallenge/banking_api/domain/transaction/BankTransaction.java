@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity @Table(name = "transactions") @Getter @Setter
+/** Immutable business record describing a banking operation and its status. */
 public class BankTransaction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     @Column(nullable = false, unique = true) private UUID reference = UUID.randomUUID();

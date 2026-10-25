@@ -13,27 +13,49 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.UUID;
 
 @Service @RequiredArgsConstructor
+/** Provides read-only account and balance operations with ownership checks. */
 public class BankAccountService {
 
     private final BankAccountRepository accounts;
     private final AppUserRepository appUserRepository;
 
     @Transactional(readOnly = true)
+    /** @param pageable pagination and sorting instructions
+     *  @return a page containing all accounts
+     */
     public Page<AccountResponse> findAll(Pageable pageable) {
         return accounts.findAll(pageable).map(this::toResponse);
     }
     
     @Transactional(readOnly = true)
+    /** @param customerId customer identifier
+     *  @param pageable pagination and sorting instructions
+     *  @return a page containing the customer's accounts
+     */
     public Page<AccountResponse> findByCustomer(UUID customerId, Pageable pageable) {
         return accounts.findByCustomerId(customerId, pageable).map(this::toResponse);
     }
     @Transactional(readOnly = true)
+    /**
+     * Returns an account only to its owner or an administrator.
+     * @param id account identifier
+     * @param authentication authenticated caller
+     * @return account details
+     * @throws ResponseStatusException with {@code 404} when the account is absent
+     * @throws ResponseStatusException with {@code 403} when access is not allowed
+     */
     public AccountResponse get(UUID id, Authentication authentication) {
         BankAccount account = findAccount(id);
         ensureCanAccess(account, authentication);
         return toResponse(account);
     }
     @Transactional(readOnly = true)
+    /**
+     * Returns the current balance only to its owner or an administrator.
+     * @param id account identifier
+     * @param authentication authenticated caller
+     * @return current balance and currency
+     */
     public BalanceResponse balance(UUID id, Authentication authentication) {
         BankAccount a = findAccount(id);
         ensureCanAccess(a, authentication);

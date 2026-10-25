@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import mz.co.bankchallenge.banking_api.enums.AccountType;
 
+/** Input required to create a customer and its initial account. */
 public record CreateCustomerRequest(
         @NotBlank(message = "Username is required")
         @Size(min = 3, max = 80, message = "Username must contain between 3 and 80 characters")

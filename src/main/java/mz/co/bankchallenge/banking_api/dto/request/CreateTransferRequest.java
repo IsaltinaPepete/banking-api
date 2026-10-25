@@ -2,6 +2,7 @@ package mz.co.bankchallenge.banking_api.dto.request;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.UUID;
+/** Input describing a transfer between two accounts. */
 public record CreateTransferRequest(
     @NotNull UUID sourceAccountId,
     @NotNull UUID destinationAccountId,

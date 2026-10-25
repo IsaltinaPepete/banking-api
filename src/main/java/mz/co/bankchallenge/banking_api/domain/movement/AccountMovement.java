@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity @Table(name = "account_movements") @Getter @Setter
+/** Ledger entry representing one credit or debit applied to an account. */
 public class AccountMovement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

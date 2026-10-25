@@ -18,11 +18,22 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Service @RequiredArgsConstructor
+/** Applies administrative deposits and records their account movements. */
 public class DepositService {
     private final BankAccountRepository accounts;
     private final BankTransactionRepository transactions;
     private final AccountMovementRepository movements;
     @Transactional
+    /**
+     * Deposits a positive amount while locking the account row for the transaction.
+     * The balance update and movement record are committed or rolled back together.
+     *
+     * @param accountId destination account identifier
+     * @param req deposit amount and optional description
+     * @return the updated balance
+     * @throws ResponseStatusException with {@code 400} for an invalid amount
+     * @throws ResponseStatusException with {@code 404} when the account is absent
+     */
     public BalanceResponse deposit(UUID accountId, DepositRequest req) {
 
         BigDecimal amount = req.amount();

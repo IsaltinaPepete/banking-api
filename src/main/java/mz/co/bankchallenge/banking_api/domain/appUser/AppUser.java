@@ -14,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+/** Manual association between a Keycloak subject and a customer. */
 public class AppUser {
 
     @Id

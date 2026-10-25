@@ -9,8 +9,13 @@ import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
+/** Persistence contract for account movements and statement searches. */
 public interface AccountMovementRepository extends JpaRepository<AccountMovement, Long> {
+    /** @param accountId account identifier
+     *  @return number of movements recorded for the account
+     */
     long countByAccountId(UUID accountId);
+    /** @return a paginated result matching the supplied statement filters */
     @Query("""
     SELECT m FROM AccountMovement m
     JOIN m.transaction t

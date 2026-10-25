@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+/** Maps application, validation, security and persistence failures to API errors. */
 public class GlobalExceptionHandler {
 
     private static final Logger log =

@@ -33,5 +33,11 @@ build/
 .vscode/
 .env
 certificado.ssl
-src/main/resources/application.properties
-src/main/resources/application.yml
+
+# Configurações locais com possíveis credenciais
+**/src/main/resources/application.properties
+**/src/main/resources/application.yml
+
+# Manter apenas os exemplos versionados
+!**/src/main/resources/application.properties.example
+!**/src/main/resources/application.yml.example

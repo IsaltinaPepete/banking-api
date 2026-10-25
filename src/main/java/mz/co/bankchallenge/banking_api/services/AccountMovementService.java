@@ -22,6 +22,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+/** Provides filtered, paginated account statements with ownership enforcement. */
 public class AccountMovementService {
 
     private final AccountMovementRepository movements;
@@ -30,6 +31,22 @@ public class AccountMovementService {
 
 
     @Transactional(readOnly = true)
+    /**
+     * Searches account movements using an optional time range, type and direction.
+     * Non-administrative callers may access only an account linked to their customer.
+     *
+     * @param accountId account whose statement is requested
+     * @param from inclusive lower time bound, or the beginning of the supported range
+     * @param toExclusive exclusive upper time bound, or the end of the supported range
+     * @param type optional transaction type filter
+     * @param direction optional credit/debit filter
+     * @param pageable pagination and sorting instructions
+     * @param authentication authenticated caller
+     * @return a filtered page of movements
+     * @throws ResponseStatusException with {@code 400} for an invalid time range
+     * @throws ResponseStatusException with {@code 403} when access is not allowed
+     * @throws ResponseStatusException with {@code 404} when the account is absent
+     */
     public Page<MovementResponse> search(
             UUID accountId,
             OffsetDateTime from,

@@ -22,6 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/accounts/{accountId}/movements")
 @RequiredArgsConstructor
+/** Exposes the filtered and paginated account-statement endpoint. */
 public class AccountMovementController {
 
     private final AccountMovementService service;
@@ -29,6 +30,7 @@ public class AccountMovementController {
     @Operation(summary = "Consultar movimentos", description = "Lista os movimentos de uma conta com filtros de data, tipo, direção e paginação.")
     @GetMapping
     @PreAuthorize("hasAnyRole('role_admin', 'role_user')")
+    /** Returns movements after authentication and ownership checks. */
     public ResponseEntity<Page<MovementResponse>> search(
             @PathVariable UUID accountId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

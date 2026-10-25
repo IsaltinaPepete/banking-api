@@ -14,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @NoArgsConstructor
+/** Persistent customer identified by a unique NUIT. */
 public class Customer {
 
     @Id

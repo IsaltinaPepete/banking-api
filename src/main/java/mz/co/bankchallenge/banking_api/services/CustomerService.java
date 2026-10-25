@@ -26,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+/** Coordinates customer and initial bank-account creation and customer queries. */
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -36,6 +37,16 @@ public class CustomerService {
     private final CustomerMapper customerMapper;
 
     @Transactional
+    /**
+     * Creates a customer and one empty bank account in the same transaction.
+     *
+     * <p>The NUIT is checked before persistence and the generated account number
+     * is verified against existing accounts.</p>
+     *
+     * @param request customer and account-type data
+     * @return the persisted customer and account data
+     * @throws ResourceAlreadyExistsException if the NUIT is already registered
+     */
     public CreateCustomerResponse createCustomer(CreateCustomerRequest request) {
 
         if (customerRepository.existsByNuit(request.nuit())) {
@@ -69,12 +80,24 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
+    /** @param pageable pagination and sorting instructions
+     *  @return a page of customers
+     */
     public Page<CustomerResponse> getAllCustomers(Pageable pageable) {
         return customerRepository.findAll(pageable)
                 .map(customerMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
+    /**
+     * Returns a customer after checking ownership for non-administrative users.
+     *
+     * @param id customer identifier
+     * @param authentication authenticated caller and its Keycloak identity
+     * @return the requested customer
+     * @throws ResponseStatusException with {@code 404} when the customer does not exist
+     * @throws ResponseStatusException with {@code 403} when the caller is not the owner
+     */
     public CustomerResponse getCustomerById(UUID id, Authentication authentication) {
 
         Customer customer = customerRepository.findById(id)

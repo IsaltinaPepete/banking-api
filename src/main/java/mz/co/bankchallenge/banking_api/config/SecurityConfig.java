@@ -24,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+/** Configures stateless JWT authentication and method-level authorization. */
 public class SecurityConfig {
 
     private final JwtConverter jwtConverter;
@@ -33,6 +34,17 @@ public class SecurityConfig {
     }
 
     @Bean
+    /**
+     * Builds the security filter chain used by the API.
+     *
+     * <p>JWT failures and authorization failures are serialized as the API's
+     * standard error payload, including a correlation identifier.</p>
+     *
+     * @param http Spring Security HTTP configuration
+     * @param jsonMapper mapper used to serialize security error responses
+     * @return configured stateless security filter chain
+     * @throws Exception if Spring Security cannot build the filter chain
+     */
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             JsonMapper jsonMapper) throws Exception {

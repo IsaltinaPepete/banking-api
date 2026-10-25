@@ -6,6 +6,7 @@ import mz.co.bankchallenge.banking_api.domain.transaction.BankTransaction;
 import java.util.UUID;
 
 @Entity @Table(name = "transfers") @Getter @Setter
+/** Transfer-specific details linked to a banking transaction. */
 public class Transfer {
     @Id @GeneratedValue(strategy = GenerationType.UUID) private UUID id;
     @OneToOne(fetch = FetchType.LAZY, optional = false)

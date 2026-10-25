@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/transfers")
 @RequiredArgsConstructor
+/** Exposes authenticated account-to-account transfers. */
 public class TransferController {
 
     private final TransferService service;
@@ -22,6 +23,7 @@ public class TransferController {
     @Operation(summary = "Transferir dinheiro", description = "Transfere dinheiro entre duas contas.")
     @PostMapping
     @PreAuthorize("hasRole('role_user')")
+    /** Initiates a transfer subject to validation and source-account ownership. */
     public ResponseEntity<TransferResponse> create(
             @Valid @RequestBody CreateTransferRequest request,
             Authentication authentication) {

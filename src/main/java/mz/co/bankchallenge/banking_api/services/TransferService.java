@@ -22,6 +22,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Service @RequiredArgsConstructor
+/** Executes atomic transfers and records the resulting movements. */
 public class TransferService {
     private final BankAccountRepository accounts;
     private final BankTransactionRepository transactions;
@@ -30,6 +31,19 @@ public class TransferService {
     private final AppUserRepository appUserRepository;
 
     @Transactional
+    /**
+     * Transfers funds between two accounts owned by the caller or by an administrator.
+     * Both account rows are locked in a deterministic order to reduce deadlocks;
+     * balance changes and movement records share the surrounding transaction.
+     *
+     * @param req source, destination, amount and description of the transfer
+     * @param authentication authenticated caller used for ownership checks
+     * @return transfer reference and resulting operation details
+     * @throws ResponseStatusException with {@code 400} for invalid accounts, amounts or currencies
+     * @throws ResponseStatusException with {@code 403} when the caller does not own the source account
+     * @throws ResponseStatusException with {@code 404} when an account is absent
+     * @throws ResponseStatusException with {@code 409} when the source balance is insufficient
+     */
     public TransferResponse transfer(CreateTransferRequest req, Authentication authentication) {
         UUID sourceId = req.sourceAccountId();
         UUID destId = req.destinationAccountId();

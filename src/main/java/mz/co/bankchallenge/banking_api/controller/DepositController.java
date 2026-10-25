@@ -15,6 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/accounts")
 @RequiredArgsConstructor
+/** Exposes the administrative account-deposit endpoint. */
 public class DepositController {
 
     private final DepositService service;
@@ -22,6 +23,7 @@ public class DepositController {
     @Operation(summary = "Depositar dinheiro", description = "Adiciona dinheiro ao saldo de uma conta.")
     @PostMapping("/{id}/deposits")
     @PreAuthorize("hasRole('role_admin')")
+    /** Adds a deposit and returns the updated account balance. */
     public ResponseEntity<BalanceResponse> deposit(
             @PathVariable UUID id,
             @Valid @RequestBody DepositRequest request) {

@@ -20,6 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+/** Bank account associated with one customer and holding its current balance. */
 public class BankAccount {
 
     @Id 

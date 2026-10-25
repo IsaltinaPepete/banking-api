@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.stream.*;
 
 @Component
+/** Converts Keycloak JWT claims into Spring Security authorities. */
 public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
@@ -27,6 +28,12 @@ public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken>
     private String resourceId;
 
     @Override
+    /**
+     * Converts a JWT into an authenticated token with resource roles.
+     *
+     * @param jwt validated Keycloak JWT
+     * @return Spring Security authentication token
+     */
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
 
         Collection<GrantedAuthority> authorities = Stream.concat(
