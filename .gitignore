@@ -32,3 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .env
+certificado.ssl
+src/main/resources/application.properties
+src/main/resources/application.yml

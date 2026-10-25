@@ -1,0 +1,15 @@
+spring.application.name=AplicationName
+
+# PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/NomeBD
+spring.datasource.username=banking_user
+spring.datasource.password=ChangeMe
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Hibernate
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+
+# Flyway
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
